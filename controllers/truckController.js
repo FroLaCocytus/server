@@ -21,7 +21,6 @@ class TruckController {
         limit = limit || 6 
         let offset = page * limit - limit
         let trucks
-        console.log(companyId)
         if (!companyId) {
             trucks = await Truck.findAndCountAll({limit, offset})
         } 
@@ -34,7 +33,6 @@ class TruckController {
 
     async getOne(req, res){
         let {companyId} = req.query 
-        console.log("Darou" + companyId)
         const {id} = req.params
         const truck = await Truck.findOne({where: {id, companyId}})
         return res.json(truck)

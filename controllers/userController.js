@@ -44,7 +44,8 @@ class UserController {
     }
 
     async check(req, res, next){
-        const token = generateJwt(req.user.id, req.user.login, req.user.role, req.user.companyId)
+        const user = await User.findOne({where: {id: req.user.id}})
+        const token = generateJwt(req.user.id, req.user.login, req.user.role, user.companyId)
         return res.json({token})
     }
 }
