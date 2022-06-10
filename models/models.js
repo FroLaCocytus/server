@@ -23,7 +23,6 @@ const Truck = sequelize.define('truck',{
     number: {type: DataTypes.STRING, unique: true},
     region_number: {type: DataTypes.INTEGER},
     enabled: {type: DataTypes.BOOLEAN, defaultValue: "false"},
-    img: {type: DataTypes.STRING, defaultValue: "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"}
 })
 
 const Company = sequelize.define('company',{

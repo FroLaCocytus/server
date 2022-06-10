@@ -6,12 +6,9 @@ const path = require('path')
 class TruckController {
     async create(req, res, next){
         try{
-            const {model, number, enabled, companyId} = req.body
-            const {img} = req.files
-            let fileName = uuid.v4() + ".jpg"
-            img.mv(path.resolve(__dirname, '..', 'static', fileName))
-    
-            const truck = await Truck.create({model, number, enabled, img: fileName, companyId})
+            const {model, number, regionNumber, companyId} = req.body
+            let region_number = regionNumber
+            const truck = await Truck.create({model, number, region_number, companyId})
             return res.json(truck)
         } catch (e) {
             next(ApiError.badRequest(e.message))
@@ -21,9 +18,10 @@ class TruckController {
     async getAll(req, res){
         let {companyId, limit, page} = req.query 
         page = page || 1
-        limit = limit || 9 
+        limit = limit || 6 
         let offset = page * limit - limit
         let trucks
+        console.log(companyId)
         if (!companyId) {
             trucks = await Truck.findAndCountAll({limit, offset})
         } 
@@ -35,8 +33,10 @@ class TruckController {
     
 
     async getOne(req, res){
+        let {companyId} = req.query 
+        console.log("Darou" + companyId)
         const {id} = req.params
-        const truck = await Truck.findOne({where: {id}})
+        const truck = await Truck.findOne({where: {id, companyId}})
         return res.json(truck)
     }
 }
