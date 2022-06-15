@@ -22,7 +22,7 @@ const Truck = sequelize.define('truck',{
     model: {type: DataTypes.STRING},
     number: {type: DataTypes.STRING, unique: true},
     region_number: {type: DataTypes.INTEGER},
-    enabled: {type: DataTypes.BOOLEAN, defaultValue: "false"},
+    connect_key: {type: DataTypes.STRING},
 })
 
 const Company = sequelize.define('company',{
@@ -33,9 +33,19 @@ const Company = sequelize.define('company',{
 const Device = sequelize.define('device',{
     id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
     device_number: {type: DataTypes.STRING, allowNull: false},
+    enabled: {type: DataTypes.BOOLEAN, defaultValue: "false"},
+})
+
+const Temperature = sequelize.define('temperature',{
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    time: {type: DataTypes.DATE},
     temperature: {type: DataTypes.FLOAT},
+})
+
+const Humidity = sequelize.define('humidity',{
+    id: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
+    time: {type: DataTypes.DATE},
     humidity: {type: DataTypes.FLOAT},
-    solenoid: {type: DataTypes.BOOLEAN}
 })
 
 User.hasOne(View)
@@ -56,11 +66,19 @@ Truck.belongsTo(Company)
 Company.hasMany(User)
 User.belongsTo(Company)
 
+Device.hasMany(Temperature)
+Temperature.belongsTo(Device)
+
+Device.hasMany(Humidity)
+Humidity.belongsTo(Device)
+
 module.exports = {
     User,
     View,
     ViewTruck,
     Truck,
     Company,
-    Device
+    Device,
+    Humidity,
+    Temperature
 }

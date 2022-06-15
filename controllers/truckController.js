@@ -1,7 +1,5 @@
 const {Truck, Device} = require('../models/models')
 const ApiError = require('../error/ApiError')
-const uuid = require('uuid')
-const path = require('path')
 
 class TruckController {
     async create(req, res, next){
@@ -13,6 +11,12 @@ class TruckController {
         } catch (e) {
             next(ApiError.badRequest(e.message))
         }
+    }
+
+    async updateKey(req, res, next){
+        const {id, connect_key} = req.body
+        const truck = await Truck.update({ connect_key }, {where: { id }})
+        return res.json(truck)
     }
 
     async getAll(req, res){
@@ -35,6 +39,12 @@ class TruckController {
         let {companyId} = req.query 
         const {id} = req.params
         const truck = await Truck.findOne({where: {id, companyId}})
+        return res.json(truck)
+    }
+
+    async getOneId(req, res){
+        let {connect_key} = req.query 
+        const truck = await Truck.findOne({where: {connect_key}})
         return res.json(truck)
     }
 }
